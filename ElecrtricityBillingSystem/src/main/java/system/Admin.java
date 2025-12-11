@@ -2,23 +2,35 @@ package system;
 
 import java.util.ArrayList;
 
-public class Admin extends User {
+public class Admin {
 
-    public Admin(int id, String name, String email, String password) {
-        super(id, name, email, password);
+    public Admin() {
     }
 
     // (A) View all bills of specific regions
-    public void viewBillsByRegion(String region, ArrayList<Bill> allBills) {
-        System.out.println("\n--- Admin: Bills for " + region + " ---");
-        boolean found = false;
-        for (Bill bill : allBills) {
-            if (bill.getRegion().equalsIgnoreCase(region)) {
-                System.out.println(bill);
-                found = true;
+    public String viewBillsByRegion(String region) {
+        if (region.equalsIgnoreCase(Bill.regions[0])
+                || region.equalsIgnoreCase(Bill.regions[1])
+                || region.equalsIgnoreCase(Bill.regions[2])
+                || region.equalsIgnoreCase(Bill.regions[3])) {
+
+            String result = "";
+            String display = "-------you are viewing the bills of region:" + region + "--------\n";
+
+            for (int j = 0; j < 2; j++) {
+
+                result += "\n --- Month " + (j + 1) + " ---\n";
+
+                for (int i = 0; i < (int) (Math.random() * 20) + 1; i++) {
+                    result += "Bill of apartment " + (i + 1)
+                            + " with metercode " + (long) (Math.random() * 100_000) + 1
+                            + " paid " + (Math.random() * 1000) + 1
+                            + " LE\n";
+                }
             }
+            return display + result;
         }
-        if (!found) System.out.println("No bills found.");
+        return "Sorry this region is uncovered by you\n";
     }
 
     // (B) View total collected (Only Paid Bills)
@@ -54,7 +66,6 @@ public class Admin extends User {
     }
 
     // (D) Manage Users (Add / Update / Delete)
-    
     // 1. Add
     public void addUser(ArrayList<User> users, User newUser) {
         users.add(newUser);
@@ -64,8 +75,11 @@ public class Admin extends User {
     // 2. Delete
     public void deleteUser(ArrayList<User> users, int userId) {
         boolean removed = users.removeIf(u -> u.getId() == userId);
-        if (removed) System.out.println("Admin: User " + userId + " deleted.");
-        else System.out.println("Admin: User not found.");
+        if (removed) {
+            System.out.println("Admin: User " + userId + " deleted.");
+        } else {
+            System.out.println("Admin: User not found.");
+        }
     }
 
     // 3. Update (Email for example)
