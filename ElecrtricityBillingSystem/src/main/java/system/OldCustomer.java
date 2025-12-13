@@ -1,29 +1,31 @@
+
 package system;
 
 public class OldCustomer extends User {
 
     protected long meterCode;
     protected int monthlyreading;
-    protected double amount;
-
-    OldCustomer(int id, String name, String email, String password, long metercode, int monthlyreading) {
+    
+    public OldCustomer(int id, String name, String email, String password, long meterCode, int monthlyReading) {
         super(id, name, email, password);
-        this.meterCode = metercode;
-        this.monthlyreading = monthlyreading;
-    }
-
-    // (b) enable customer set monthly reading
-    public void setMonthlyReading(int monthlyreading) {
-        this.monthlyreading = monthlyreading;
+        this.meterCode = meterCode;
     }
     
+    
     // (a) enable customer pay with metercode
-    public String payBill(long meterCode, double amount) {
-        return "Customer " + name + " paid: " + amount + " using meter code: " + meterCode;
+    public String payBill(long meterCode, double payment) {
+        return "Customer " + name + " paid: " + payment + " using meter code: " + meterCode;
     }
+    
+
+    // (b) enable customer set monthly reading
+    public void setMonthlyReading(int monthlyReading) {
+        this.monthlyreading = monthlyReading;
+    }
+     
 
     // (c) enable customer complain about bill 
-    public String ComplaintAboutBill(long metercode, String message) {
+    public String complaintAboutBill(long meterCode, String message) {
         return "your complaint about the bill with meter code: " + meterCode + " is: " + message + "\n we will review your complaint, thank you for your feedback";
     }
 

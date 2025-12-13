@@ -1,27 +1,25 @@
 package system;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Admin {
+   
 
     public Admin() {
     }
 
     // (A) View all bills of specific regions
     public String viewBillsByRegion(String region) {
-        if (region.equalsIgnoreCase(Bill.regions[0])
-                || region.equalsIgnoreCase(Bill.regions[1])
-                || region.equalsIgnoreCase(Bill.regions[2])
-                || region.equalsIgnoreCase(Bill.regions[3])) {
-
+  
+            int numberOfUnits = (int) (Math.random() * 100) + 1;
             String result = "";
             String display = "-------you are viewing the bills of region:" + region + "--------\n";
 
-            for (int j = 0; j < 2; j++) {
+            for (int j = 0; j < 4; j++){
 
                 result += "\n --- Month " + (j + 1) + " ---\n";
 
-                for (int i = 0; i < (int) (Math.random() * 20) + 1; i++) {
+                for (int i = 0; i < numberOfUnits; i++) {
                     result += "Bill of apartment " + (i + 1)
                             + " with metercode " + (long) (Math.random() * 100_000) + 1
                             + " paid " + (Math.random() * 1000) + 1
@@ -29,68 +27,62 @@ public class Admin {
                 }
             }
             return display + result;
-        }
-        return "Sorry this region is uncovered by you\n";
+
     }
 
     // (B) View total collected (Only Paid Bills)
-    public void viewTotalCollected(ArrayList<Bill> allBills) {
+    public String viewTotalCollected(ArrayList<Bill> allBills) {
         double total = 0;
+        
         for (Bill bill : allBills) {
             if (bill.isPaid()) {
-                total += bill.getAmount();
+                total += bill.getPayment();
             }
         }
-        System.out.println("\n--- Admin: Total Collected Revenue ---");
-        System.out.println("Total: " + total + " EGP");
+        return "--- Admin: Total Collected Revenue ---\n" + "Total collected : " + total;
     }
 
     // (C) Consumption statistics for specific region
-    public void reportConsumptionStats(String region, ArrayList<Bill> allBills) {
-        double totalUnits = 0;
-        int count = 0;
-
-        for (Bill bill : allBills) {
-            if (bill.getRegion().equalsIgnoreCase(region)) {
-                totalUnits += bill.getUnits();
-                count++;
+    public String reportConsumptionStats(String region, ArrayList<Bill> allBills) {
+       double sum = 0;
+       int size = 0;
+       
+         for (Bill bill : allBills) {
+            if (bill.isPaid()) {
+                sum += bill.getPayment();
+                size++;
             }
-        }
-
-        System.out.println("\n--- Admin: Stats for " + region + " ---");
-        System.out.println("Total Bills: " + count);
-        System.out.println("Total Consumption: " + totalUnits + " kW/h");
-        if (count > 0) {
-            System.out.println("Average Consumption: " + (totalUnits / count) + " kW/h");
-        }
+        }   
+         
+       return  "Region : "  + region + "\nNumber of units is : " + size + 
+            "\nAverage of total collected = " + sum / size + "\n";
     }
 
     // (D) Manage Users (Add / Update / Delete)
     // 1. Add
-    public void addUser(ArrayList<User> users, User newUser) {
+    public String addUser(ArrayList<User> users, User newUser) {
         users.add(newUser);
-        System.out.println("Admin: User " + newUser.getName() + " added.");
+        return "Admin: User " + newUser.getName() + " added.\n";
     }
 
     // 2. Delete
-    public void deleteUser(ArrayList<User> users, int userId) {
+    public String deleteUser(ArrayList<User> users, int userId) {
         boolean removed = users.removeIf(u -> u.getId() == userId);
         if (removed) {
-            System.out.println("Admin: User " + userId + " deleted.");
+            return "Admin: User " + userId + " deleted.";
         } else {
-            System.out.println("Admin: User not found.");
+            return "Admin: User not found.";
         }
     }
 
     // 3. Update (Email for example)
-    public void updateUserEmail(ArrayList<User> users, int userId, String newEmail) {
+    public String updateUserEmail(ArrayList<User> users, int userId, String newEmail) {
         for (User u : users) {
             if (u.getId() == userId) {
                 u.setEmail(newEmail);
-                System.out.println("Admin: Email updated for " + u.getName());
-                return;
+                return "Admin: Email updated for " + u.getName(); 
             }
         }
-        System.out.println("Admin: User not found to update.");
+        return "Admin: User not found to update.";
     }
 }

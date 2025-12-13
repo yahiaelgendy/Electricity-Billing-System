@@ -1,7 +1,5 @@
 package system;
 
-import java.util.*;
-
 public class Operator {
 
     public Operator() {
@@ -10,44 +8,38 @@ public class Operator {
     // (a) collect payment from customer
     public String collectPayment(long paymentID, double payment) {
         if (paymentID > 0 && payment > 0) {
-            return "payment with " + payment + " LE" + " using " + paymentID + " succesfully\n";
+            return "payment with " + payment + " LE" + " using ID " +  +paymentID + " succesfully\n";
         } else {
-            return "payment unsuccesfully \n please make sure from details\n";
+            return "payment unsuccesfully \nplease make sure from details\n";
         }
     }
 
     // (b) print the bill details (updated (use bill class))
-    public String printBill(Bill bill) {
-        return "your bill with metercode " + bill.getMeterCode() + " costs" + bill.getAmount() + " LE\n";
+    public String printBill(long meterCode , double payment) {
+        return "your bill with metercode " + meterCode + " costs " + payment + " LE\n";
     }
 
     // (c) enable operator see bills 
     public String viewRegion(String region) {
 
-        if (region.equalsIgnoreCase(Bill.regions[0])
-                || region.equalsIgnoreCase(Bill.regions[1])
-                || region.equalsIgnoreCase(Bill.regions[2])
-                || region.equalsIgnoreCase(Bill.regions[3])) {
-
             String display = "-------you are viewing the bills of region:" + region + "--------\n";
             String result = "";
 
-            for (int i = 0; i < (int) (Math.random() * 20) + 1; i++) {
+            for (int i = 0; i < (int) (Math.random() * 100) + 1; i++) {
                 result += "Bill of apartment " + (i + 1)
                         + " with metercode " + (long) (Math.random() * 100_000) + 1
-                        + " paid " + (Math.random() * 1000) + 1
+                        + " paid " + (float) (Math.random() * 1000) + 1
                         + " LE\n";
             }
 
             return display + result;
-        }
-        return "Sorry this region is uncovered by you\n";
+
     }
 
     // (d) validate reading with real consumption
     public String validateReading(int enteredReading, int realReading) {
-        if (enteredReading < 0 || realReading < 0) {
-            return "Readings cannot be negative.\n";
+        if (enteredReading <= 0 || realReading <= 0) {
+            return "Readings cannot be negative or zero.\n";
         }
         if (enteredReading == realReading) {
             return "Reading is valid and matches real consumption.\n";
@@ -74,6 +66,6 @@ public class Operator {
         }
 
         return "Meter code : " + meterCode
-                + " has been stopped and subscription cancelled.\n";
+            + " has been stopped and subscription cancelled.\n";
     }
 }

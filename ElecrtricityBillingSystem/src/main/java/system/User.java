@@ -2,8 +2,8 @@ package system;
 
 import java.util.Date;
 
-// Abstract class (interface)
-public abstract class User {
+
+public class User {
 
     protected int id;
     protected String name;
