@@ -8,12 +8,15 @@ public class Bill {
     protected double payment;
     protected long paymentID;
     protected static double currentTariff = 1.0; 
-    public Bill(long meterCode, boolean isPaid, double payment, long paymentID) {
+    protected String region;
+    
+    public Bill(long meterCode, boolean isPaid, double payment, long paymentID , String region) {
 
         this.meterCode = meterCode;
         this.isPaid = isPaid;
         this.payment = payment;
         this.paymentID = paymentID;
+        this.region = region;
     }
 
     public boolean isPaid() {
@@ -32,13 +35,21 @@ public class Bill {
     public long getPaymentID() {
         return paymentID;
     }
+    
+    public void setRegion(String region){
+        this.region = region;
+    }
+    
+    public String getRegion(){
+        return region;
+    }
 
     // updated
     @Override
     public String toString() {
 
         return "Bill details :\n - Metercode: " + meterCode +  "\n - Payment: " +
-            payment + "\n - payment ID: " + paymentID;
+            payment + "\n - payment ID: " + paymentID + "\n - Region : " + region ;
     }
 
 }

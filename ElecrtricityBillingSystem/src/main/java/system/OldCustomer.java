@@ -22,7 +22,7 @@ public class OldCustomer extends User {
                 throw new IllegalArgumentException("Invalid data\nplease recheck");
             }
             Bill.isPaid=true;
-            return "Customer " + name + " paid: " + payment + " using meter code: " + meterCode;
+            return "Customer " + name + " paid: " + payment + " LE using meter code: " + meterCode;
         }
         catch (IllegalArgumentException e) {
             return e.getMessage();

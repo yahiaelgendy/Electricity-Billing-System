@@ -1,1 +1,12 @@
-system\ElecrtricityBillingSystem.class
+system\OperatorGUI.class
+system\LoginGUI.class
+system\OldCustomerGUI.class
+system\Operator.class
+system\Admin.class
+system\Bill.class
+system\NewCustomer.class
+system\AdminGUI.class
+system\DataStore.class
+system\User.class
+system\NewCustomerGUI.class
+system\OldCustomer.class

@@ -1,8 +1,10 @@
 package system;
+import java.util.*;
 
-public class Operator {
+public class Operator extends User{
 
-    public Operator() {
+    public Operator(int id, String name, String email, String password){
+        super(id , name, email , password);
     }
 
     // (a) collect payment from customer
@@ -37,11 +39,15 @@ public class Operator {
     // (c) enable operator see bills
     public String viewRegion(String region) {
         try {
+             Random units = new Random(2);
+            int numberOfUnits = units.nextInt(100) + 1;
+            
+            
             String display = "-------you are viewing the bills of region:"
                     + region + "--------\n";
             String result = "";
 
-            for (int i = 0; i < (int) (Math.random() * 100) + 1; i++) {
+            for (int i = 0; i < numberOfUnits ; i++) {
                 result += "Bill of apartment " + (i + 1)
                         + " with metercode " + ((long) (Math.random() * 100_000) + 1)
                         + " paid " + ((float) (Math.random() * 1000) + 1)

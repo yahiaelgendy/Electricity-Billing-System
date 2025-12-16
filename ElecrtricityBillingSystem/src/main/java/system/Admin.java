@@ -2,10 +2,10 @@ package system;
 
 import java.util.*;
 
-public class Admin  {
-   
-
-    public Admin() {
+public class Admin extends User {
+       
+    public Admin(int id, String name, String email, String password){
+        super(id , name, email , password);
     }
 
     // (A) View all bills of specific regions
