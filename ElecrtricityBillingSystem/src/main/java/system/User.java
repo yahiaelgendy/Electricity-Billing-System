@@ -1,6 +1,7 @@
 package system;
 
 import java.util.Date;
+import java.io.*;
 
 
 public class User {
@@ -20,7 +21,19 @@ public class User {
         this.email = email;
         this.password = password;
     }
-
+    
+      //added
+    public void saveUserToFile() {
+        try {
+            FileWriter writer = new FileWriter("Users_Log.txt", true); 
+            writer.write("ID: " + id + " | Name: " + name + " | Email: " + email + " | Role: User\n");
+            writer.write("--------------------------------------------------\n");
+            writer.close();
+            System.out.println("User saved to Users_Log.txt ");
+        } catch (IOException e) {
+            System.out.println("Error saving user");
+        }
+    }
     public String getName() {
         return name;
     }

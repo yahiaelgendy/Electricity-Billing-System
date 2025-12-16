@@ -1,11 +1,12 @@
 package system;
 
 import java.util.*;
+import java.io.*;
 
-public class Admin extends User {
-       
-    public Admin(int id, String name, String email, String password){
-        super(id , name, email , password);
+public class Admin  {
+   
+
+    public Admin() {
     }
 
     // (A) View all bills of specific regions
@@ -78,12 +79,24 @@ public class Admin extends User {
 
     // (D) Manage Users (Add / Update / Delete)
     // 1. Add
-    public String addUser(ArrayList<User> users, User newUser) {
+   public String addUser(ArrayList<User> users, User newUser) {
+        users.add(newUser);
+        
+        newUser.saveUserToFile(); 
+         //added
+        logAdminAction("Added user: " + newUser.getName());
+        
+        return "User " + newUser.getName() + " added.";
+    }
+   
+     //added
+   private void logAdminAction(String action) {
         try {
-            users.add(newUser);
-            return "Admin: User " + newUser.getName() + " added.\n";
-        } catch (Exception e) {
-            return "Error while adding user\nPlease recheck\n";
+            FileWriter writer = new FileWriter("Admin_Log.txt", true);
+            writer.write("[ADMIN] " + action + " | Date: " + new Date() + "\n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error logging admin action");
         }
     }
 
@@ -92,7 +105,12 @@ public class Admin extends User {
         try {
             for (int i = 0; i < users.size(); i++) {
                 if (users.get(i).getId() == userId) {
+                    
+                   String deletedName = users.get(i).getName();
                     users.remove(i);
+                    
+                    logAdminAction("Deleted user: " + deletedName);
+                
                     return "User with user ID : " + userId + " deleted successfully\n";
                 }
             }
@@ -119,3 +137,4 @@ public class Admin extends User {
         }
     }
 }
+

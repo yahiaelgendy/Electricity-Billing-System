@@ -1,20 +1,27 @@
 package system;
+
+import java.io.*;
 import java.util.*;
 
-public class Operator extends User{
+public class Operator {
 
-    public Operator(int id, String name, String email, String password){
-        super(id , name, email , password);
+    public Operator() {
     }
 
     // (a) collect payment from customer
-    public String collectPayment(long paymentID, double payment) {
+    public String collectPayment(Bill b,int amount) {
         try {
-            if (paymentID > 0 && payment > 0) {
-                // updated
-                Bill.isPaid = true;
-                return "payment with " + payment + " LE using ID "
-                        + paymentID + " succesfully\n";
+            if (b.getPaymentID() > 0 && b.getPayment() > 0) {
+               
+            if( amount >= b.getPayment())
+               
+                b.setPaid();
+            
+            //  //added
+                logAction("Collected " + b.getPayment() + " LE for Bill ID " + b.getPaymentID());
+                
+                return "payment with " + b.getPayment() + " LE using ID "
+                        +b.getPaymentID() + " succesfully\n";
             } 
             else {
                 return "payment unsuccesfully \nplease make sure from details\n";
@@ -24,30 +31,33 @@ public class Operator extends User{
             return "Error while collecting payment\nPlease recheck\n";
         }
     }
-
-    // (b) print the bill details
-    public String printBill(long meterCode, double payment) {
+           //added 
+    private void logAction(String action) {
         try {
-            return "your bill with metercode " + meterCode
-                    + " costs " + payment + " LE\n";
+            FileWriter writer = new FileWriter("Operator_Log.txt", true);
+            writer.write("[Operator Action] " + action + " at " + new Date() + "\n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error logging operator action");
         }
-        catch (Exception e) {
-            return "Error while printing bill\nPlease recheck\n";
-        }
+    }
+
+    // (b) print the bill details (updated)
+    public String printBill(Bill b) {
+       
+            return "your bill with metercode " + b.getMeterCode()
+                    + " costs " + b.getPayment() + " LE\n";
+     
     }
 
     // (c) enable operator see bills
     public String viewRegion(String region) {
         try {
-             Random units = new Random(2);
-            int numberOfUnits = units.nextInt(100) + 1;
-            
-            
             String display = "-------you are viewing the bills of region:"
                     + region + "--------\n";
             String result = "";
 
-            for (int i = 0; i < numberOfUnits ; i++) {
+            for (int i = 0; i < (int) (Math.random() * 100) + 1; i++) {
                 result += "Bill of apartment " + (i + 1)
                         + " with metercode " + ((long) (Math.random() * 100_000) + 1)
                         + " paid " + ((float) (Math.random() * 1000) + 1)

@@ -1,22 +1,42 @@
 package system;
 
+import java.io.*;
+
 public class Bill {
 
     protected long meterCode;
         // updated 
-    protected static boolean isPaid;
+    protected boolean isPaid;
     protected double payment;
     protected long paymentID;
     protected static double currentTariff = 1.0; 
-    protected String region;
-    
-    public Bill(long meterCode, boolean isPaid, double payment, long paymentID , String region) {
+    public Bill(long meterCode, boolean isPaid, double payment, long paymentID) {
 
+        //validate inputs 
+        if(meterCode <=0 ||payment<0 || paymentID <=0 ){
+            throw new IllegalArgumentException("\"Invalid inputs code\"");
+        }
+        
         this.meterCode = meterCode;
         this.isPaid = isPaid;
         this.payment = payment;
         this.paymentID = paymentID;
-        this.region = region;
+    }
+    
+      //added
+    public void saveBillToFile() {
+        try {
+            FileWriter writer = new FileWriter("Bills.txt", true);
+            writer.write("Bill ID: " + paymentID + " | Meter: " + meterCode + " | Amount: " + payment + " | Status: " + (isPaid ? "Paid" : "Unpaid") + "\n");
+            writer.close();
+            System.out.println("Bill saved to Bills.txt ");
+        } catch (IOException e) {
+            System.out.println("Error saving bill");
+        }
+    }
+    // add new mathod**
+    public void setPaid(){
+        isPaid = true;
     }
 
     public boolean isPaid() {
@@ -35,21 +55,13 @@ public class Bill {
     public long getPaymentID() {
         return paymentID;
     }
-    
-    public void setRegion(String region){
-        this.region = region;
-    }
-    
-    public String getRegion(){
-        return region;
-    }
 
     // updated
     @Override
     public String toString() {
 
         return "Bill details :\n - Metercode: " + meterCode +  "\n - Payment: " +
-            payment + "\n - payment ID: " + paymentID + "\n - Region : " + region ;
+            payment + "\n - payment ID: " + paymentID;
     }
 
 }

@@ -1,5 +1,5 @@
 package system;
-
+import java.io.*;
 public class NewCustomer extends User {
     
     private boolean meterReady;
@@ -33,10 +33,23 @@ public class NewCustomer extends User {
         try {
             if (contractPath == null)
                 throw new NullPointerException();
+            
             this.contractPath = contractPath;
+            //added
+            saveContractInfo();
         }
         catch (Exception e) {
             System.out.println("Contract path cannot be null");
+        }
+    }
+     //added
+    private void saveContractInfo() {
+        try {
+            FileWriter writer = new FileWriter("Contracts.txt", true);
+            writer.write("New Customer: " + name + " | Contract: " + contractPath + "\n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving contract info.");
         }
     }
     

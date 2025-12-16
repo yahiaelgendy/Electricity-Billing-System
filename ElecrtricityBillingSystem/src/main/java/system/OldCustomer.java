@@ -1,47 +1,68 @@
-
 package system;
 
+import java.io.*;
+import java.util.*;
 public class OldCustomer extends User {
 
     protected long meterCode;
-    protected int monthlyreading;
+    protected int monthlyReading;
     
+  
     public OldCustomer(int id, String name, String email, String password, long meterCode) {
         super(id, name, email, password);
         if (meterCode <= 0) {
-            throw new IllegalArgumentException("Invalid meter code\nPlease recheck\n");
+            throw new IllegalArgumentException("Invalid monthlyreading code\nPlease recheck\n");
         }
         this.meterCode = meterCode;
     }
     
     
-    // (a) enable customer pay with metercode
-    public String payBill(long meterCode, double payment) {
-        try {
-            if (meterCode <= 0 || payment <= 0) {
-                throw new IllegalArgumentException("Invalid data\nplease recheck");
+    // (a) enable customer pay with metercode//add Bill class
+    public String payBill(Bill b, double amount) {
+     
+            if(this.meterCode != b.getMeterCode()){
+                return "not the same meterCode\n please recheck your meterCode";
             }
-            Bill.isPaid=true;
-            return "Customer " + name + " paid: " + payment + " LE using meter code: " + meterCode;
+            
+            if( amount >= b.getPayment()){
+                b.setPaid();            
+                logPaymentToFile(b.getPayment());
+                return "Customer " + name + " paid: " + b.getPayment() + " using meter code: " +b.getMeterCode();
+            }else 
+                return "your amount is not enough";
         }
-        catch (IllegalArgumentException e) {
-            return e.getMessage();
+    
+    
+    
+      //added
+    private void logPaymentToFile(double amount) {
+        try {
+            FileWriter writer = new FileWriter("Payments_History.txt", true);
+            writer.write("Customer: " + name + " | Paid: " + amount + " LE | Date: " + new Date() + "\n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error logging payment");
         }
     }
+
+    
     
 
     // (b) enable customer set monthly reading
     public void setMonthlyReading(int monthlyReading) {
-        try {
+        
+            try {
             if (monthlyReading < 0) {
                 throw new IllegalArgumentException("Invalid monthly reading\nPlease recheck\n");
             }
-            this.monthlyreading = monthlyReading;
+            this.monthlyReading = monthlyReading;
         }
         catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
+        
+    
     
     // (c) enable customer complain about bill 
     public String complaintAboutBill(long meterCode, String message) {
